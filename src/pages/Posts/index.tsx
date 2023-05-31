@@ -5,11 +5,16 @@ import { fetchAllPostsAction } from '@store/sagas/actions/actions';
 import { getAllPosts } from '@store/selectors';
 
 import styles from '@styles/Posts.module.css';
+import { Paginate } from '@components/Paginate';
+import { Post } from '@components/Post';
+import { usePaginate } from '@/hooks/usePaginate';
 
 export const Posts = () => {
     const posts = useSelector(getAllPosts);
-    const navigate = useNavigate();
 
+    const { currentPosts, paginate, previousPage, nextPage, postsPerPage } = usePaginate(posts, 1, 10);
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,26 +29,20 @@ export const Posts = () => {
         <>
             <Link to={'/'}>About</Link>
             <div className={styles.header}>All posts</div>
+
             <div>
-                {posts.map((post) => (
-                    <div key={post.id} className={styles.wrapper}>
-                        <div
-                            style={{
-                                width: 50,
-                                height: 50,
-                                borderStyle: 'solid',
-                                borderColor: 'black',
-                                borderWidth: 1,
-                                borderRadius: 25,
-                                cursor: 'pointer',
-                            }}
-                            onClick={onUserPagePress(post.userId)}
-                        />
-                        <div className={styles.title}>{post.title}</div>
-                        <div>{post.body}</div>
-                    </div>
+                {currentPosts.map((post) => (
+                    <Post post={post} onUserPagePress={onUserPagePress} key={post.id} />
                 ))}
             </div>
+
+            <Paginate
+                postsPerPage={postsPerPage}
+                totalPosts={posts.length}
+                paginate={paginate}
+                previousPage={previousPage}
+                nextPage={nextPage}
+            />
         </>
     );
 };
