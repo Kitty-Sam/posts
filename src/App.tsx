@@ -3,6 +3,7 @@ import { About } from '@pages/About';
 import { Posts } from '@pages/Posts';
 import { User } from '@pages/User';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 export const routes = [
     { id: 1, path: '/', element: <About /> },
@@ -11,12 +12,15 @@ export const routes = [
 ];
 export const App = () => {
     return (
-        <BrowserRouter>
-            <Routes>
-                {routes.map(({ path, element, id }) => (
-                    <Route path={path} element={element} key={id} />
-                ))}
-            </Routes>
-        </BrowserRouter>
+        <>
+            <BrowserRouter>
+                <Routes>
+                    {routes.map(({ path, element, id }) => (
+                        <Route path={path} element={element} key={id} />
+                    ))}
+                </Routes>
+            </BrowserRouter>
+            <ToastContainer />
+        </>
     );
 };
