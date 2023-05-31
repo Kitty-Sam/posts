@@ -1,14 +1,22 @@
 import { FC } from 'react';
-
+import styles from '@styles/Pagination.module.css';
 export interface IPaginate {
     postsPerPage: number;
     totalPosts: number;
     paginate: (value: number) => void;
-    previousPage: any;
-    nextPage: any;
+    previousPage: () => void;
+    nextPage: () => void;
+    currentPage: number;
 }
 
-export const Paginate: FC<IPaginate> = ({ postsPerPage, totalPosts, paginate, previousPage, nextPage }) => {
+export const Paginate: FC<IPaginate> = ({
+    paginate,
+    previousPage,
+    nextPage,
+    currentPage,
+    totalPosts,
+    postsPerPage,
+}) => {
     const pageNumbers = [];
 
     for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
@@ -16,18 +24,23 @@ export const Paginate: FC<IPaginate> = ({ postsPerPage, totalPosts, paginate, pr
     }
 
     return (
-        <div className="pagination-container">
-            <ul className="pagination">
-                <li onClick={previousPage} className="page-number">
-                    Prev
+        <div className={styles.wrapper}>
+            <ul className={styles.pagination}>
+                <li onClick={previousPage} className={styles.pageNumber}>
+                    &lt;
                 </li>
                 {pageNumbers.map((number) => (
-                    <li key={number} onClick={() => paginate(number)} className="page-number">
+                    <li
+                        key={number}
+                        onClick={() => paginate(number)}
+                        className={styles.pageNumber}
+                        style={{ backgroundColor: number === currentPage ? '#646cff' : 'inherit' }}
+                    >
                         {number}
                     </li>
                 ))}
-                <li onClick={nextPage} className="page-number">
-                    Next
+                <li onClick={nextPage} className={styles.pageNumber}>
+                    &gt;
                 </li>
             </ul>
         </div>

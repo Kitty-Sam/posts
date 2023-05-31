@@ -9,8 +9,13 @@ export const usePaginate = (posts: IPost[], initCurrentPage: number, initPostPer
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
+    const pageNumbers = [currentPage - 1, currentPage, currentPage + 1];
+
     const paginate = (pageNumber: number) => {
         setCurrentPage(pageNumber);
+        // if (currentPage >= 2 && currentPage < Math.ceil(posts.length / postsPerPage)) {
+        //     setCurrentPage(pageNumber);
+        // }
     };
 
     const previousPage = () => {
@@ -31,5 +36,7 @@ export const usePaginate = (posts: IPost[], initCurrentPage: number, initPostPer
         previousPage,
         nextPage,
         postsPerPage,
+        currentPage,
+        pageNumbers,
     };
 };

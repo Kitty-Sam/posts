@@ -10,7 +10,11 @@ import { usePaginate } from '@/hooks/usePaginate';
 export const User = () => {
     const filteredPosts = useSelector(getFilteredPosts);
 
-    const { currentPosts, paginate, previousPage, nextPage, postsPerPage } = usePaginate(filteredPosts, 1, 10);
+    const { currentPosts, paginate, previousPage, nextPage, currentPage, postsPerPage } = usePaginate(
+        filteredPosts,
+        1,
+        10,
+    );
 
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -36,6 +40,7 @@ export const User = () => {
                 paginate={paginate}
                 previousPage={previousPage}
                 nextPage={nextPage}
+                currentPage={currentPage}
             />
         </>
     );

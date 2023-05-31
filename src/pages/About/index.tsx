@@ -8,8 +8,6 @@ export const About = () => {
             <div className={styles.title}>Personal info</div>
             <div className={styles.title}>Name</div>
             <Link to={'/posts'}>posts</Link>
-            {/*<div>----</div>*/}
-            {/*<Link to={'/user/1'}>user</Link>*/}
         </div>
     );
 };
