@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllPostsAction } from '@store/sagas/actions/actions';
 import { getAllPosts } from '@store/selectors';
 
-import styles from '@styles/Posts.module.css';
-import { Paginate } from '@components/Paginate';
 import { Post } from '@components/Post';
 import { usePaginate } from '@/hooks/usePaginate';
 import { useSearch } from '@/hooks/useSearch';
+import { PaginationUI } from '@components/Pagination';
+import { Container, Stack } from 'react-bootstrap';
 
 export const Posts = () => {
     const posts = useSelector(getAllPosts);
@@ -16,12 +16,6 @@ export const Posts = () => {
     const { search, onChangeSearch } = useSearch();
 
     const searchedPosts = posts.filter((post) => post.title.includes(search));
-
-    const { currentPosts, paginate, previousPage, nextPage, currentPage, postsPerPage } = usePaginate(
-        searchedPosts.length ? searchedPosts : posts,
-        1,
-        10,
-    );
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -34,26 +28,22 @@ export const Posts = () => {
         navigate(`/user/${id}`);
     };
 
-    return (
-        <>
-            <Link to={'/about'}>About</Link>
-            <div className={styles.header}>All posts</div>
-            <input value={search} onChange={onChangeSearch} placeholder={'Type to search...'} />
+    const { visiblePosts, handlePageChange, currentPage, totalPages } = usePaginate(searchedPosts, posts);
 
-            <div>
-                {currentPosts.map((post) => (
+    return (
+        <Stack gap={3}>
+            <Link to={'/about'}>About</Link>
+            <p className="lead">All posts</p>
+            <Container>
+                <input value={search} onChange={onChangeSearch} placeholder={'Type to search...'} />
+            </Container>
+
+            <Container>
+                {visiblePosts.map((post) => (
                     <Post post={post} onUserPagePress={onUserPagePress} key={post.id} />
                 ))}
-            </div>
-
-            <Paginate
-                postsPerPage={postsPerPage}
-                totalPosts={posts.length}
-                paginate={paginate}
-                previousPage={previousPage}
-                nextPage={nextPage}
-                currentPage={currentPage}
-            />
-        </>
+            </Container>
+            <PaginationUI currentPage={currentPage} totalPages={totalPages} handlePageChange={handlePageChange} />
+        </Stack>
     );
 };

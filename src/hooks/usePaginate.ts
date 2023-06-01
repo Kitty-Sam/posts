@@ -1,39 +1,28 @@
 import { useState } from 'react';
 import { IPost } from '@store/redux/reducers/postReducer';
 
-export const usePaginate = (posts: IPost[], initCurrentPage: number, initPostPerPage: number) => {
-    const [currentPage, setCurrentPage] = useState(initCurrentPage);
-    const [postsPerPage] = useState(initPostPerPage);
+export const usePaginate = (searchedPosts: IPost[] | [], posts: IPost[]) => {
+    const [currentPage, setCurrentPage] = useState(1);
 
-    const indexOfLastPost = currentPage * postsPerPage;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
-    const pageNumbers = [currentPage - 1, currentPage, currentPage + 1];
-
-    const paginate = (pageNumber: number) => {
-        setCurrentPage(pageNumber);
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
     };
 
-    const previousPage = () => {
-        if (currentPage !== 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
+    const postsPerPage = 10;
 
-    const nextPage = () => {
-        if (currentPage !== Math.ceil(posts.length / postsPerPage)) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
+    const totalPages = Math.ceil(
+        searchedPosts.length ? searchedPosts.length / postsPerPage : posts.length / postsPerPage,
+    );
+    const startIndex = (currentPage - 1) * postsPerPage;
+    const endIndex = startIndex + postsPerPage;
+    const visiblePosts = searchedPosts.length
+        ? searchedPosts.slice(startIndex, endIndex)
+        : posts.slice(startIndex, endIndex);
 
     return {
-        currentPosts,
-        paginate,
-        previousPage,
-        nextPage,
-        postsPerPage,
+        handlePageChange,
+        totalPages,
+        visiblePosts,
         currentPage,
-        pageNumbers,
     };
 };
