@@ -1,9 +1,12 @@
-import styles from '@styles/Post.module.css';
 import { IPost } from '@store/redux/reducers/postReducer';
 import { FC, useState } from 'react';
 import { fetchCommentsAction } from '@store/sagas/actions/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { getComments } from '@store/selectors';
+
+import { initAvatar } from '@constants/initAvatar';
+import { Avatar } from '@components/shared/Avatar';
+import { Col, Container, Row, Stack } from 'react-bootstrap';
 
 export interface IPostProps {
     post: IPost;
@@ -24,22 +27,30 @@ export const Post: FC<IPostProps> = ({ post, onUserPagePress }) => {
     };
 
     return (
-        <div key={id} className={styles.wrapper}>
-            <div className={styles.avatar} onClick={onUserPagePress(userId)} />
-            <div className={styles.title}>{title}</div>
-            <div>{body}</div>
-            <button onClick={onCommentPress(id)}>Comment</button>
+        <Stack gap={3} className="border mt-5 p-5 rounded">
+            <Avatar imageUrl={initAvatar} onClick={onUserPagePress(userId)} />
+            <h2 className="display-7">{title}</h2>
+            <p className="lead">{body}</p>
+            <Container>
+                <button onClick={onCommentPress(id)}>Comment</button>
+            </Container>
+
             {isOpenComments ? (
-                comments.map((comment, index) => (
-                    <div key={comment.id}>
-                        <div>{index + 1}</div>
-                        <div>{comment.email}</div>
-                        <div>{comment.body}</div>
-                    </div>
+                comments.map((comment) => (
+                    <Container key={comment.id}>
+                        <Row>
+                            <Col>
+                                <p className="lead text-start">{comment.email}</p>
+                            </Col>
+                            <Col xs={6}>
+                                <h6 className="display-7 text-end">{comment.body}</h6>
+                            </Col>
+                        </Row>
+                    </Container>
                 ))
             ) : (
                 <></>
             )}
-        </div>
+        </Stack>
     );
 };
