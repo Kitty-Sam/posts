@@ -8,11 +8,20 @@ import styles from '@styles/Posts.module.css';
 import { Paginate } from '@components/Paginate';
 import { Post } from '@components/Post';
 import { usePaginate } from '@/hooks/usePaginate';
+import { useSearch } from '@/hooks/useSearch';
 
 export const Posts = () => {
     const posts = useSelector(getAllPosts);
 
-    const { currentPosts, paginate, previousPage, nextPage, currentPage, postsPerPage } = usePaginate(posts, 1, 10);
+    const { search, onChangeSearch } = useSearch();
+
+    const searchedPosts = posts.filter((post) => post.title.includes(search));
+
+    const { currentPosts, paginate, previousPage, nextPage, currentPage, postsPerPage } = usePaginate(
+        searchedPosts.length ? searchedPosts : posts,
+        1,
+        10,
+    );
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -27,8 +36,9 @@ export const Posts = () => {
 
     return (
         <>
-            <Link to={'/'}>About</Link>
+            <Link to={'/about'}>About</Link>
             <div className={styles.header}>All posts</div>
+            <input value={search} onChange={onChangeSearch} placeholder={'Type to search...'} />
 
             <div>
                 {currentPosts.map((post) => (

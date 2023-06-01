@@ -1,6 +1,13 @@
 import { PostActions, UserActions } from '@store/redux/actions/type';
 import { IPost } from '@store/redux/reducers/postReducer';
 
+export interface IComment {
+    postId: number;
+    id: number;
+    name: string;
+    email: string;
+    body: string;
+}
 export interface FetchPostsPayload {
     posts: IPost[];
 }
@@ -19,4 +26,17 @@ export type FetchFilteredPosts = {
     payload: FetchFilteredPostsPayload;
 };
 
-export type ActionsType = FetchFilteredPosts | FetchPosts;
+export interface FetchCommentsPayload {
+    comments: IComment[];
+}
+
+export type FetchComments = {
+    type: typeof PostActions.FETCH_COMMENTS_BY_ID;
+    payload: FetchCommentsPayload;
+};
+
+export interface FetchPostsByTitlePayload {
+    sortedPosts: IPost[];
+}
+
+export type ActionsType = FetchFilteredPosts | FetchPosts | FetchComments;

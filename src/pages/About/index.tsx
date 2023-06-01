@@ -7,7 +7,7 @@ export const About = () => {
         <div>
             <div className={styles.title}>Personal info</div>
             <div className={styles.title}>Name</div>
-            <Link to={'/posts'}>posts</Link>
+            <Link to={'/'}>posts</Link>
         </div>
     );
 };

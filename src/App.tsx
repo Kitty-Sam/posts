@@ -6,8 +6,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 export const routes = [
-    { id: 1, path: '/', element: <About /> },
-    { id: 2, path: '/posts', element: <Posts /> },
+    { id: 1, path: '/about', element: <About /> },
+    { id: 2, path: '/', element: <Posts /> },
     { id: 3, path: '/user/:id', element: <User /> },
 ];
 export const App = () => {

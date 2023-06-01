@@ -1,5 +1,5 @@
 import { PostActions } from '@store/redux/actions/type';
-import { ActionsType } from '@store/redux/types';
+import { ActionsType, IComment } from '@store/redux/types';
 
 export interface IPost {
     userId: string;
@@ -10,10 +10,12 @@ export interface IPost {
 
 export interface IInitialState {
     filteredPosts: IPost[];
+    comments: IComment[];
 }
 
 const initialState: IInitialState = {
     filteredPosts: [],
+    comments: [],
 };
 
 export const postReducer = (state = initialState, action: ActionsType) => {
@@ -21,6 +23,10 @@ export const postReducer = (state = initialState, action: ActionsType) => {
         case PostActions.FETCH_FILTERED_BY_USER_POSTS: {
             return { ...state, filteredPosts: action.payload.filteredPosts };
         }
+        case PostActions.FETCH_COMMENTS_BY_ID: {
+            return { ...state, comments: action.payload.comments };
+        }
+
         default:
             return state;
     }

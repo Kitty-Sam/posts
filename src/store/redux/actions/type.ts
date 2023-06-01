@@ -4,4 +4,5 @@ export enum UserActions {
 
 export enum PostActions {
     FETCH_FILTERED_BY_USER_POSTS = 'FETCH_FILTERED_BY_USER_POSTS',
+    FETCH_COMMENTS_BY_ID = 'FETCH_COMMENTS_BY_ID',
 }
