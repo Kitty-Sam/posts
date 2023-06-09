@@ -2,6 +2,10 @@ button {
     all: unset;
 }
 
+input {
+    all: unset;
+}
+
 button {
     background-color: #646cff;
     cursor: pointer;
@@ -14,3 +18,11 @@ button:hover {
     background-color:  #fff;
 }
 
+input {
+    padding: 1rem 1rem;
+    border: 1px solid grey
+}
+
+input:focus {
+    border: 1px solid  #646cff
+}

@@ -8,11 +8,13 @@ import { useSearch } from '@/hooks/useSearch';
 import { PaginationUI } from '@components/Pagination';
 import { usePaginate } from '@/hooks/usePaginate';
 import { Container, Stack } from 'react-bootstrap';
-import { Header } from '@components/shared/Header';
+import { FiArrowLeft } from 'react-icons/fi';
 
 export const User = () => {
     const filteredPosts = useSelector(getFilteredPosts, shallowEqual);
     const openedUser = useSelector(getOpenedUser, shallowEqual);
+
+    const { email, phone, name } = openedUser;
 
     const navigate = useNavigate();
 
@@ -39,12 +41,18 @@ export const User = () => {
         navigate(`/user/${id}`);
     };
 
-    console.log('openedUser', openedUser);
+    const onBackPress = () => {
+        navigate('/');
+    };
+
     return (
         <Stack gap={3}>
-            <Header />
-            <p className="lead">{openedUser.name}</p>
-            <p className="lead">{openedUser.phone}</p>
+            <FiArrowLeft onClick={onBackPress} size={32} />
+            <Container>
+                <p className="lead">{name}</p>
+                <p className="lead">{email}</p>
+                <p className="lead">{phone}</p>
+            </Container>
             <Container>
                 <input value={search} onChange={onChangeSearch} placeholder={'Type to search...'} />
             </Container>
