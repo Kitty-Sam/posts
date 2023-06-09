@@ -11,11 +11,13 @@ export interface IPost {
 export interface IInitialState {
     filteredPosts: IPost[];
     comments: IComment[];
+    isLoading: boolean;
 }
 
 const initialState: IInitialState = {
     filteredPosts: [],
     comments: [],
+    isLoading: false,
 };
 
 export const postReducer = (state = initialState, action: ActionsType) => {
@@ -25,6 +27,10 @@ export const postReducer = (state = initialState, action: ActionsType) => {
         }
         case PostActions.FETCH_COMMENTS_BY_ID: {
             return { ...state, comments: action.payload.comments };
+        }
+
+        case PostActions.IS_LOADING_COMMENTS: {
+            return { ...state, isLoading: action.payload.isLoading };
         }
 
         default:

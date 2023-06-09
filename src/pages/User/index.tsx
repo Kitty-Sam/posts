@@ -1,26 +1,32 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getFilteredPosts } from '@store/selectors';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { getFilteredPosts, getOpenedUser } from '@store/selectors';
 import { fetchFilteredPostsAction } from '@store/sagas/actions/actions';
 import { Post } from '@components/Post';
 import { useSearch } from '@/hooks/useSearch';
 import { PaginationUI } from '@components/Pagination';
 import { usePaginate } from '@/hooks/usePaginate';
 import { Container, Stack } from 'react-bootstrap';
+import { Header } from '@components/shared/Header';
 
 export const User = () => {
-    const filteredPosts = useSelector(getFilteredPosts);
+    const filteredPosts = useSelector(getFilteredPosts, shallowEqual);
+    const openedUser = useSelector(getOpenedUser, shallowEqual);
+
     const navigate = useNavigate();
 
     const { search, onChangeSearch } = useSearch();
 
-    const searchedFilteredPosts = filteredPosts.filter((post) => post.title.includes(search));
+    const searchedFilteredPosts = search.length ? filteredPosts.filter((post) => post.title.includes(search)) : [];
 
-    const { visiblePosts, handlePageChange, currentPage, totalPages } = usePaginate(
-        searchedFilteredPosts,
-        filteredPosts,
-    );
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+
+    const { visiblePosts, totalPages } = usePaginate(searchedFilteredPosts, filteredPosts, currentPage);
 
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -33,9 +39,12 @@ export const User = () => {
         navigate(`/user/${id}`);
     };
 
+    console.log('openedUser', openedUser);
     return (
         <Stack gap={3}>
-            <Link to="/">Posts</Link>
+            <Header />
+            <p className="lead">{openedUser.name}</p>
+            <p className="lead">{openedUser.phone}</p>
             <Container>
                 <input value={search} onChange={onChangeSearch} placeholder={'Type to search...'} />
             </Container>

@@ -1,5 +1,6 @@
 import { PostActions, UserActions } from '@store/redux/actions/type';
 import { IPost } from '@store/redux/reducers/postReducer';
+import { IUser } from '@store/redux/reducers/userReducer';
 
 export interface IComment {
     postId: number;
@@ -35,8 +36,22 @@ export type FetchComments = {
     payload: FetchCommentsPayload;
 };
 
-export interface FetchPostsByTitlePayload {
-    sortedPosts: IPost[];
+export interface IsLoadingCommentsPayload {
+    isLoading: boolean;
 }
 
-export type ActionsType = FetchFilteredPosts | FetchPosts | FetchComments;
+export type IsLoadingComments = {
+    type: typeof PostActions.IS_LOADING_COMMENTS;
+    payload: IsLoadingCommentsPayload;
+};
+
+export interface OpenedUserPayload {
+    openedUser: IUser;
+}
+
+export type OpenedUser = {
+    type: typeof UserActions.SET_OPENED_USER;
+    payload: OpenedUserPayload;
+};
+
+export type ActionsType = FetchFilteredPosts | FetchPosts | FetchComments | IsLoadingComments | OpenedUser;

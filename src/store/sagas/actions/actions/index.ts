@@ -1,4 +1,4 @@
-import { FETCH_ALL_POSTS, FETCH_COMMENTS, FETCH_FILTERED_POSTS } from '@store/sagas/actions/type';
+import { FETCH_ALL_POSTS, FETCH_COMMENTS, FETCH_FILTERED_POSTS, FETCH_OPENED_USER } from '@store/sagas/actions/type';
 
 export const fetchAllPostsAction = () => ({
     type: FETCH_ALL_POSTS,
@@ -34,4 +34,18 @@ export const fetchCommentsAction = (payload: FetchFCommentsPayloadType) => ({
 export type FetchComments = {
     type: typeof FETCH_COMMENTS;
     payload: FetchFCommentsPayloadType;
+};
+
+export interface FetchOpenedUserPayloadType {
+    userId: string;
+}
+
+export const fetchOpenedUserAction = (payload: FetchOpenedUserPayloadType) => ({
+    type: FETCH_OPENED_USER,
+    payload,
+});
+
+export type FetchOpenedUser = {
+    type: typeof FETCH_OPENED_USER;
+    payload: FetchOpenedUserPayloadType;
 };
